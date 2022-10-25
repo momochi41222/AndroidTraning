@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">練習アプリ</string>
+    <string name="sub_title">サブ画面タイトル</string>
+    <string name="hint">名前を入力してください</string>
+    <string name="food">フード</string>
+    <string name="drink">ドリンク</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="namae">名前</string>
+    <string name="confirmation">確認</string>
+    <string name="DataIn">データを入力してください</string>
+    <string name="DataConfirm">データ追加</string>
+    <string name="kanso">感想を入力してください</string>
+    <string name="save">保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="reset">リセット</string>
+    <string-array name="currylist">
+        <item>ドライカレー</item>
+        <item>カツカレー</item>
+    </string-array>
+</resources>
