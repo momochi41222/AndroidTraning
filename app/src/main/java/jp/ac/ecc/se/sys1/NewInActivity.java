@@ -1,14 +1,10 @@
 package jp.ac.ecc.se.sys1;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,15 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class IntentActivity extends AppCompatActivity {
+public class NewInActivity extends AppCompatActivity {
     //カメラ起動用のリクエストコードを宣言する
     final int CAMERA_RESULT = 100;
-    Uri imageUri;
+    Uri imageUri2;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -37,31 +31,24 @@ public class IntentActivity extends AppCompatActivity {
             Bitmap bitmap = data.getParcelableExtra("data");
             cameraImage.setImageBitmap(bitmap);
             */
-            cameraImage.setImageURI(imageUri);
+            cameraImage.setImageURI(imageUri2);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intent);
-        //画面上のパーツを変数にセット
-        EditText searchText = findViewById(R.id.searchText);
-        Button searchButton = findViewById(R.id.searchButton);
-        Button cameraButton = findViewById(R.id.cameraButton);
-        FloatingActionButton confirmFab = findViewById(R.id.confirmFab);
+        setContentView(R.layout.activity_new_in);
 
-        Intent intent = new Intent(this,ImageActivity.class);
+        EditText TitleText = findViewById(R.id.TitleText);
+        EditText ContentText = findViewById(R.id.ContentText);
+        ImageView imageView = findViewById(R.id.imageViewForList);
+        Button cameraButton = findViewById(R.id.cameraButton2);
+        Button saveButton = findViewById(R.id.SaveButton);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String query = searchText.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, query);
-                startActivity(intent);
-            }
-        });
+        Intent intent = getIntent();
+        final Uri[] imageUri = {intent.getParcelableExtra("imageUri")};
+        imageView.setImageURI(imageUri[0]);
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,23 +62,12 @@ public class IntentActivity extends AppCompatActivity {
                 values.put(MediaStore.Images.Media.TITLE, fileName);
                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
                 //保存場所
-                imageUri =
+                imageUri2 =
                         getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 //カメラのIntentにパラメータセット
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri2);
 
                 startActivityForResult(intent, CAMERA_RESULT);
-            }
-        });
-
-        confirmFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ImageView cameraImage = findViewById(R.id.cameraImage);
-                if (cameraImage.getDrawable() != null) {
-                    intent.putExtra("imageUri",imageUri);
-                    startActivity(intent);
-                }
             }
         });
     }
